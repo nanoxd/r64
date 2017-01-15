@@ -40,7 +40,7 @@ impl CPU {
     }
 
     fn power_on_reset(&mut self) {
-        // TODO
+        self.cp0.power_on_reset();
     }
 }
 
