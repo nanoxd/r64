@@ -23,10 +23,6 @@ struct CPU {
 }
 
 impl CPU {
-    fn new() -> CPU {
-        CPU::default()
-    }
-
     fn power_on_reset(&mut self) {
         self.cp0.power_on_reset();
     }
@@ -85,7 +81,7 @@ fn main() {
     let pif = read_bin(pif_file_name);
     let rom = read_bin(rom_file_name);
 
-    let mut cpu = CPU::new();
+    let mut cpu = CPU::default();
     cpu.power_on_reset();
     print!("{:?}", &cpu);
 }
