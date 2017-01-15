@@ -17,6 +17,8 @@ struct CPU {
     reg_llbit: bool, // TODO: Enum type
     reg_fcr0: u32,
     reg_fcr31: u32,
+
+    cp0: CP0,
 }
 
 impl CPU {
@@ -48,6 +50,12 @@ struct CP0 {
     reg_tag_lo: u64,
     reg_tag_hi: u64,
     reg_error_epc: u64,
+}
+
+impl CP0 {
+    fn new() -> CP0 {
+        unimplemented!()
+    }
 }
 
 fn main() {
