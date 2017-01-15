@@ -72,6 +72,34 @@ struct CP0 {
 
 impl CP0 {
     fn new() -> CP0 {
+        CP0 {
+            reg_index: 0,
+            reg_random: 0,
+            reg_entry_lo0: 0,
+            reg_entry_lo1: 0,
+            reg_context: 0,
+            reg_page_mask: 0,
+            reg_wired: 0,
+            reg_bad_v_addr: 0,
+            reg_count: 0,
+            reg_entry_hi: 0,
+            reg_compare: 0,
+            reg_status: 0,
+            reg_cause: 0,
+            reg_epc: 0,
+            reg_pr_id: 0,
+            reg_config: 0,
+            reg_ll_addr: 0,
+            reg_watch_lo: 0,
+            reg_watch_hi: 0,
+            reg_xcontext: 0,
+            reg_tag_lo: 0,
+            reg_tag_hi: 0,
+            reg_error_epc: 0,
+        }
+    }
+
+    fn power_on_reset(&mut self) {
         unimplemented!()
     }
 }
