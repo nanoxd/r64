@@ -1,0 +1,6 @@
+[package]
+name = "r64"
+version = "0.1.0"
+authors = ["Fernando Paredes <nano@fdp.io>"]
+
+[dependencies]
