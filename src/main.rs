@@ -3,8 +3,20 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-struct CPU {
+const NUM_GPR: usize = 32;
 
+struct CPU {
+    reg_grp: [u64; NUM_GPR],
+    reg_fpr: [u64; NUM_GPR],
+
+    reg_pc: u64,
+
+    reg_hi: u64,
+    reg_lo: u64,
+
+    reg_llbit: bool, // TODO: Enum type
+    reg_fcr0: u32,
+    reg_fcr31: u32,
 }
 
 impl CPU {
