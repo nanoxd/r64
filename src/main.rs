@@ -4,11 +4,15 @@ use std::io::Read;
 use std::path::Path;
 
 fn main() {
-    let file_name = env::args().nth(1).unwrap();
+    let pif_file_name = env::args().nth(1).unwrap();
+    let rom_file_name = env::args().nth(2).unwrap();
+
+    let pif = read_bin(pif_file_name);
+    let rom = read_bin(rom_file_name);
 }
 
-fn load_rom<P: AsRef<Path>>(path: P) -> Vec<u8> {
-    let mut file = File::open(&path).unwrap();
+fn read_bin<P: AsRef<Path>>(path: P) -> Vec<u8> {
+    let mut file = File::open(path.as_ref()).unwrap();
     let mut file_buffer = Vec::new();
     file.read_to_end(&mut file_buffer).unwrap();
 
