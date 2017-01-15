@@ -32,7 +32,18 @@ impl CPU {
     }
 }
 
-#[derive(Default)]
+// TODO: Better name
+#[derive(Debug)]
+enum RegConfigEp {
+    D,
+    DxxDxx,
+    RFU,
+}
+
+impl Default for RegConfigEp {
+    fn default() -> RegConfigEp { RegConfigEp::D }
+}
+
 struct CP0 {
     reg_index: u64,
     reg_random: u64,
