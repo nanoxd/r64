@@ -60,6 +60,13 @@ struct RegConfig {
     reg_config_be: RegConfigBe,
 }
 
+impl RegConfig {
+    fn power_on_reset(&mut self) {
+        self.reg_config_ep = RegConfigEp::D;
+        self.reg_config_be = RegConfigBe::BigEndian;
+    }
+}
+
 #[derive(Default, Debug)]
 struct CP0 {
     reg_config: RegConfig,
@@ -67,8 +74,7 @@ struct CP0 {
 
 impl CP0 {
     fn power_on_reset(&mut self) {
-        self.reg_config_ep = RegConfigEp::D;
-        self.reg_config_be = RegConfigBe::BigEndian;
+        self.reg_config.power_on_reset();
     }
 }
 
