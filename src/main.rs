@@ -5,7 +5,7 @@ use std::path::Path;
 
 const NUM_GPR: usize = 32;
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 struct CPU {
     reg_grp: [u64; NUM_GPR],
     reg_fpr: [u64; NUM_GPR],
@@ -44,30 +44,20 @@ impl Default for RegConfigEp {
     fn default() -> RegConfigEp { RegConfigEp::D }
 }
 
+#[derive(Debug)]
+enum RegConfigBe {
+    LittleEndian,
+    BigEndian,
+}
+
+impl Default for RegConfigBe {
+    fn default() -> RegConfigBe { RegConfigBe::BigEndian }
+}
+
+#[derive(Default, Debug)]
 struct CP0 {
-    reg_index: u64,
-    reg_random: u64,
-    reg_entry_lo0: u64,
-    reg_entry_lo1: u64,
-    reg_context: u64,
-    reg_page_mask: u64,
-    reg_wired: u64,
-    reg_bad_v_addr: u64,
-    reg_count: u64,
-    reg_entry_hi: u64,
-    reg_compare: u64,
-    reg_status: u64,
-    reg_cause: u64,
-    reg_epc: u64,
-    reg_pr_id: u64,
-    reg_config: u64,
-    reg_ll_addr: u64,
-    reg_watch_lo: u64,
-    reg_watch_hi: u64,
-    reg_xcontext: u64,
-    reg_tag_lo: u64,
-    reg_tag_hi: u64,
-    reg_error_epc: u64,
+    reg_config_ep: RegConfigEp,
+    reg_config_be: RegConfigBe,
 }
 
 impl CP0 {
@@ -76,7 +66,8 @@ impl CP0 {
     }
 
     fn power_on_reset(&mut self) {
-
+        self.reg_config_ep = RegConfigEp::D;
+        self.reg_config_be = RegConfigBe::BigEndian;
     }
 }
 
@@ -88,6 +79,8 @@ fn main() {
     let rom = read_bin(rom_file_name);
 
     let mut cpu = CPU::new();
+    cpu.power_on_reset();
+    print!("{:?}", &cpu);
 }
 
 fn read_bin<P: AsRef<Path>>(path: P) -> Vec<u8> {
