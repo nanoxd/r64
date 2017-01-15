@@ -66,10 +66,6 @@ struct CP0 {
 }
 
 impl CP0 {
-    fn new() -> CP0 {
-        CP0::default()
-    }
-
     fn power_on_reset(&mut self) {
         self.reg_config_ep = RegConfigEp::D;
         self.reg_config_be = RegConfigBe::BigEndian;
