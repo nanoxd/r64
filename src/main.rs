@@ -55,9 +55,14 @@ impl Default for RegConfigBe {
 }
 
 #[derive(Default, Debug)]
-struct CP0 {
+struct RegConfig {
     reg_config_ep: RegConfigEp,
     reg_config_be: RegConfigBe,
+}
+
+#[derive(Default, Debug)]
+struct CP0 {
+    reg_config: RegConfig,
 }
 
 impl CP0 {
