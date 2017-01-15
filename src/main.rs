@@ -5,6 +5,7 @@ use std::path::Path;
 
 const NUM_GPR: usize = 32;
 
+#[derive(Default)]
 struct CPU {
     reg_grp: [u64; NUM_GPR],
     reg_fpr: [u64; NUM_GPR],
@@ -23,20 +24,7 @@ struct CPU {
 
 impl CPU {
     fn new() -> CPU {
-        CPU {
-            reg_grp: [0; NUM_GPR],
-            reg_fpr: [0; NUM_GPR],
-
-            reg_pc: 0,
-
-            reg_hi: 0,
-            reg_lo: 0,
-
-            reg_llbit: false,
-            reg_fcr0: 0,
-            reg_fcr31: 0,
-            cp0: CP0::new(),
-        }
+        CPU::default()
     }
 
     fn power_on_reset(&mut self) {
@@ -44,6 +32,7 @@ impl CPU {
     }
 }
 
+#[derive(Default)]
 struct CP0 {
     reg_index: u64,
     reg_random: u64,
@@ -72,35 +61,11 @@ struct CP0 {
 
 impl CP0 {
     fn new() -> CP0 {
-        CP0 {
-            reg_index: 0,
-            reg_random: 0,
-            reg_entry_lo0: 0,
-            reg_entry_lo1: 0,
-            reg_context: 0,
-            reg_page_mask: 0,
-            reg_wired: 0,
-            reg_bad_v_addr: 0,
-            reg_count: 0,
-            reg_entry_hi: 0,
-            reg_compare: 0,
-            reg_status: 0,
-            reg_cause: 0,
-            reg_epc: 0,
-            reg_pr_id: 0,
-            reg_config: 0,
-            reg_ll_addr: 0,
-            reg_watch_lo: 0,
-            reg_watch_hi: 0,
-            reg_xcontext: 0,
-            reg_tag_lo: 0,
-            reg_tag_hi: 0,
-            reg_error_epc: 0,
-        }
+        CP0::default()
     }
 
     fn power_on_reset(&mut self) {
-        unimplemented!()
+
     }
 }
 
