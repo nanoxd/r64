@@ -1,4 +1,5 @@
 mod cpu;
+mod n64;
 
 use std::env;
 use std::fs::File;
@@ -14,7 +15,8 @@ fn main() {
 
     let mut cpu = cpu::CPU::default();
     cpu.power_on_reset();
-    print!("{:?}", &cpu);
+    cpu.run();
+    print!("{:#?}", &cpu);
 }
 
 fn read_bin<P: AsRef<Path>>(path: P) -> Vec<u8> {
