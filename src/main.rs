@@ -23,8 +23,26 @@ struct CPU {
 
 impl CPU {
     fn new() -> CPU {
-        CPU { }
+        CPU {
+            reg_grp: [0; NUM_GPR],
+            reg_fpr: [0; NUM_GPR],
+
+            reg_pc: 0,
+
+            reg_hi: 0,
+            reg_lo: 0,
+
+            reg_llbit: false,
+            reg_fcr0: 0,
+            reg_fcr31: 0,
+            cp0: CP0::new(),
+        }
     }
+
+    fn power_on_reset(&mut self) {
+        // TODO
+    }
+}
 
 struct CP0 {
     reg_index: u64,
