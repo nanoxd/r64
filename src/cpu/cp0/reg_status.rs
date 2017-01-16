@@ -42,3 +42,16 @@ struct InterruptMask {
     external_interrupt_write_req: [bool; 5],
     software_interrupt_cause_reg: [bool; 2],
 }
+
+#[derive(Debug)]
+enum Mode {
+    Kernel,
+    Supervisor,
+    User,
+}
+
+impl Default for Debug {
+    fn default() -> Mode {
+        Mode::Kernel
+    }
+}
