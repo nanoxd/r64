@@ -49,23 +49,27 @@ impl CPU {
 
     pub fn run(&mut self) {
         loop {
-            let instruction = self.read_word(self.reg_pc);
-
-            let opcode = (instruction >> 26) & 0b111111;
-            match opcode {
-                0b001111 => { // LUI
-                    // TODO
-                    let imm = instruction & 0xffff;
-                    let rt = (instruction >> 16) & 0b111111;
-                    self.write_gpr(rt as usize, (imm << 16) as u64);
-                },
-                _ => {
-                    panic!("Unrecognized opcode: {:#x}", instruction)
-                }
-            }
-
-            self.reg_pc += 4;
+            self.run_instruction();
         }
+    }
+
+    pub fn run_instruction(&mut self) {
+        let instruction = self.read_word(self.reg_pc);
+
+        let opcode = (instruction >> 26) & 0b111111;
+        match opcode {
+            0b001111 => { // LUI
+                // TODO
+                let imm = instruction & 0xffff;
+                let rt = (instruction >> 16) & 0b111111;
+                self.write_gpr(rt as usize, (imm << 16) as u64);
+            },
+            _ => {
+                panic!("Unrecognized opcode: {:#x}", instruction)
+            }
+        }
+
+        self.reg_pc += 4;
     }
 
     fn write_gpr(&mut self, index: usize, value: u64) {
