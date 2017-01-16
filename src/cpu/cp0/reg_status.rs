@@ -36,7 +36,7 @@ impl Default for TLBGeneralExceptionVectorLocation {
     }
 }
 
-#[derive(Debug, Defaults)]
+#[derive(Debug, Default)]
 struct InterruptMask {
     timer_interrupt: bool,
     external_interrupt_write_req: [bool; 5],
