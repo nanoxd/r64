@@ -43,11 +43,13 @@ impl CPU {
 
     pub fn power_on_reset(&mut self) {
         self.cp0.power_on_reset();
+
+        self.reg_pc = 0xbfc0000;
     }
 
     pub fn run(&mut self) {
         loop {
-            
+
         }
     }
 }
