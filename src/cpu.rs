@@ -2,7 +2,6 @@ use ::interconnect;
 
 const NUM_GPR: usize = 32;
 
-#[derive(Default)]
 pub struct CPU {
     reg_grp: [u64; NUM_GPR],
     reg_fpr: [u64; NUM_GPR],
@@ -22,6 +21,26 @@ pub struct CPU {
 }
 
 impl CPU {
+    pub fn new(interconnect: interconnect::Interconnect) -> CPU {
+        CPU {
+            reg_grp: [0; NUM_GPR],
+            reg_fpr: [0; NUM_GPR],
+
+            reg_pc: 0,
+
+            reg_hi: 0,
+            reg_lo: 0,
+
+            reg_llbit: false, // TODO: Enum type
+            reg_fcr0: 0,
+            reg_fcr31: 0,
+
+            cp0: CP0::default(),
+
+            interconnect: interconnect,
+        }
+    }
+
     pub fn power_on_reset(&mut self) {
         self.cp0.power_on_reset();
     }
