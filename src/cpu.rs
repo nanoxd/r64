@@ -58,12 +58,18 @@ impl CPU {
         let instruction = self.read_word(self.reg_pc);
 
         let opcode = (instruction >> 26) & 0b111111;
+        let rt = (instruction >> 16) & 0b111111;
+
         match opcode {
             0b001111 => { // LUI
                 // TODO
                 let imm = instruction & 0xffff;
-                let rt = (instruction >> 16) & 0b111111;
                 self.write_reg_gpr(rt as usize, (imm << 16) as u64);
+            },
+            0b010000 => { // MTC0
+                let rd = (instruction >> 11) & 0b111111;
+                let data = self.read_reg_gpr(rt as usize);
+                self.cp0.set_reg(rd, data);
             },
             _ => {
                 panic!("Unrecognized opcode: {:#x}", instruction)
@@ -71,6 +77,13 @@ impl CPU {
         }
 
         self.reg_pc += 4;
+    }
+
+    fn read_reg_gpr(&self, index: usize) -> u64 {
+        match index {
+            0 => 0,
+            _ => self.reg_grp[index]
+        }
     }
 
     fn write_reg_gpr(&mut self, index: usize, value: u64) {
