@@ -1,13 +1,13 @@
 // TODO: Better name
 #[derive(Debug)]
-enum RegConfigEp {
+enum Ep {
     D,
     DxxDxx,
     RFU,
 }
 
-impl Default for RegConfigEp {
-    fn default() -> RegConfigEp { RegConfigEp::D }
+impl Default for Ep {
+    fn default() -> Ep { Ep::D }
 }
 
 #[derive(Debug)]
@@ -22,13 +22,13 @@ impl Default for RegConfigBe {
 
 #[derive(Debug, Default)]
 pub struct RegConfig {
-    ep: RegConfigEp,
+    ep: Ep,
     be: RegConfigBe,
 }
 
 impl RegConfig {
     pub fn power_on_reset(&mut self) {
-        self.ep = RegConfigEp::D;
+        self.ep = Ep::D;
         self.be = RegConfigBe::BigEndian;
     }
 }
