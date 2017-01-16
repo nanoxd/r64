@@ -22,13 +22,13 @@ impl Default for RegConfigBe {
 
 #[derive(Debug, Default)]
 pub struct RegConfig {
-    reg_config_ep: RegConfigEp,
-    reg_config_be: RegConfigBe,
+    ep: RegConfigEp,
+    be: RegConfigBe,
 }
 
 impl RegConfig {
     pub fn power_on_reset(&mut self) {
-        self.reg_config_ep = RegConfigEp::D;
-        self.reg_config_be = RegConfigBe::BigEndian;
+        self.ep = RegConfigEp::D;
+        self.be = RegConfigBe::BigEndian;
     }
 }
