@@ -67,9 +67,9 @@ impl CPU {
                 self.write_reg_gpr(rt as usize, (imm << 16) as u64);
             },
             0b010000 => { // MTC0
-                let rd = (instruction >> 11) & 0b111111;
+                let rd = (instruction >> 11) & 0b11111;
                 let data = self.read_reg_gpr(rt as usize);
-                self.cp0.set_reg(rd, data);
+                self.cp0.write_reg(rd as u32, data);
             },
             _ => {
                 panic!("Unrecognized opcode: {:#x}", instruction)
@@ -153,5 +153,9 @@ struct CP0 {
 impl CP0 {
     fn power_on_reset(&mut self) {
         self.reg_config.power_on_reset();
+    }
+
+    fn write_reg(&mut self, index: u32, data: u64) {
+        panic!("Unrecognized CP0 reg write: {:#?}: {:#?}", index, data);
     }
 }
