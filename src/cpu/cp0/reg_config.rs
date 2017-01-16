@@ -11,24 +11,24 @@ impl Default for Ep {
 }
 
 #[derive(Debug)]
-enum RegConfigBe {
+enum Be {
     LittleEndian,
     BigEndian,
 }
 
-impl Default for RegConfigBe {
-    fn default() -> RegConfigBe { RegConfigBe::BigEndian }
+impl Default for Be {
+    fn default() -> Be { Be::BigEndian }
 }
 
 #[derive(Debug, Default)]
 pub struct RegConfig {
     ep: Ep,
-    be: RegConfigBe,
+    be: Be,
 }
 
 impl RegConfig {
     pub fn power_on_reset(&mut self) {
         self.ep = Ep::D;
-        self.be = RegConfigBe::BigEndian;
+        self.be = Be::BigEndian;
     }
 }
