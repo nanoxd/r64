@@ -46,7 +46,9 @@ impl CPU {
     }
 
     pub fn run(&mut self) {
-        unimplemented!();
+        loop {
+            
+        }
     }
 }
 
