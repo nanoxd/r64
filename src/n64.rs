@@ -1,4 +1,4 @@
-use ::cpu::CPU;
+use ::cpu::cpu::CPU;
 use ::interconnect::Interconnect;
 
 #[derive(Debug)]
