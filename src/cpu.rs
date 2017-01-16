@@ -156,6 +156,15 @@ impl CP0 {
     }
 
     fn write_reg(&mut self, index: u32, data: u64) {
-        panic!("Unrecognized CP0 reg write: {:#?}: {:#?}", index, data);
+        match index {
+            12 => {
+                self.write_status_reg(data);
+            },
+            _ => panic!("Unrecognized CP0 reg: {:#?}: {:#?}", index, data)
+        }
+    }
+
+    fn write_status_reg(&mut self, data: u64) {
+        panic!("Status reg write: {:#b}", data);
     }
 }
