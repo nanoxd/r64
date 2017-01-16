@@ -50,7 +50,7 @@ enum Mode {
     User,
 }
 
-impl Default for Debug {
+impl Default for Mode {
     fn default() -> Mode {
         Mode::Kernel
     }
