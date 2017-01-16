@@ -1,6 +1,7 @@
 use ::cpu::CPU;
 use ::interconnect::Interconnect;
 
+#[derive(Debug)]
 pub struct N64 {
     cpu: CPU,
 }

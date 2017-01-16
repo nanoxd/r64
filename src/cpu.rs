@@ -2,6 +2,7 @@ use ::interconnect;
 
 const NUM_GPR: usize = 32;
 
+#[derive(Debug)]
 pub struct CPU {
     reg_grp: [u64; NUM_GPR],
     reg_fpr: [u64; NUM_GPR],
@@ -97,6 +98,7 @@ impl CPU {
 }
 
 // TODO: Better name
+#[derive(Debug)]
 enum RegConfigEp {
     D,
     DxxDxx,
@@ -107,6 +109,7 @@ impl Default for RegConfigEp {
     fn default() -> RegConfigEp { RegConfigEp::D }
 }
 
+#[derive(Debug)]
 enum RegConfigBe {
     LittleEndian,
     BigEndian,
@@ -116,7 +119,7 @@ impl Default for RegConfigBe {
     fn default() -> RegConfigBe { RegConfigBe::BigEndian }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 struct RegConfig {
     reg_config_ep: RegConfigEp,
     reg_config_be: RegConfigBe,
@@ -129,7 +132,7 @@ impl RegConfig {
     }
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 struct CP0 {
     reg_config: RegConfig,
 }
