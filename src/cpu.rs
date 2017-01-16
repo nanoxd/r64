@@ -62,7 +62,7 @@ impl CPU {
                 // TODO
                 let imm = instruction & 0xffff;
                 let rt = (instruction >> 16) & 0b111111;
-                self.write_gpr(rt as usize, (imm << 16) as u64);
+                self.write_reg_gpr(rt as usize, (imm << 16) as u64);
             },
             _ => {
                 panic!("Unrecognized opcode: {:#x}", instruction)
@@ -72,7 +72,7 @@ impl CPU {
         self.reg_pc += 4;
     }
 
-    fn write_gpr(&mut self, index: usize, value: u64) {
+    fn write_reg_gpr(&mut self, index: usize, value: u64) {
         if index != 0 {
             self.reg_grp[index] = value;
         }

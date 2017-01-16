@@ -22,4 +22,8 @@ impl N64 {
     pub fn run(&mut self) {
         self.cpu.run()
     }
+
+    pub fn run_instruction(&mut self) {
+        self.cpu.run_instruction();
+    }
 }
