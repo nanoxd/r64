@@ -5,3 +5,4 @@ authors = ["Fernando Paredes <nano@fdp.io>"]
 license = "MIT"
 
 [dependencies]
+byteorder = "1.0.0"
