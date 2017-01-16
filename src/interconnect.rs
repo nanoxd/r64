@@ -1,4 +1,5 @@
 use std::fmt;
+use byteorder::{BigEndian,ByteOrder};
 
 const PIF_ROM_SIZE: usize = 2048;
 const RAM_SIZE: usize = 4 * 1024 * 1024;
@@ -21,11 +22,7 @@ impl Interconnect {
         if addr >= 0x1fc0_0000 && addr < 0x1fc0_07c0 {
             let rel_addr = addr - 0x1fc0_0000;
 
-            // TODO: Replace with byteorder crate
-            ((self.pif_rom[rel_addr as usize] as u32) << 24) |
-            ((self.pif_rom[(rel_addr + 1) as usize] as u32) << 16) |
-            ((self.pif_rom[(rel_addr + 2) as usize] as u32) << 8) |
-            (self.pif_rom[(rel_addr + 3) as usize] as u32)
+            BigEndian::read_u32(&self.pif_rom[rel_addr as usize..])
         } else {
             panic!("Unrecognized virtual address {:#x}", addr)
         }
