@@ -1,4 +1,5 @@
 use ::interconnect;
+use super::cp0::CP0;
 
 const NUM_GPR: usize = 32;
 
@@ -142,29 +143,5 @@ impl RegConfig {
     fn power_on_reset(&mut self) {
         self.reg_config_ep = RegConfigEp::D;
         self.reg_config_be = RegConfigBe::BigEndian;
-    }
-}
-
-#[derive(Debug, Default)]
-struct CP0 {
-    reg_config: RegConfig,
-}
-
-impl CP0 {
-    fn power_on_reset(&mut self) {
-        self.reg_config.power_on_reset();
-    }
-
-    fn write_reg(&mut self, index: u32, data: u64) {
-        match index {
-            12 => {
-                self.write_status_reg(data);
-            },
-            _ => panic!("Unrecognized CP0 reg: {:#?}: {:#?}", index, data)
-        }
-    }
-
-    fn write_status_reg(&mut self, data: u64) {
-        panic!("Status reg write: {:#b}", data);
     }
 }
