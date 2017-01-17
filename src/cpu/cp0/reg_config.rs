@@ -33,13 +33,13 @@ impl Default for Endianess {
 
 #[derive(Debug, Default)]
 pub struct RegConfig {
-    transfer_data_pattern: DataTransferPattern,
+    data_transfer_pattern: DataTransferPattern,
     endianess: Endianess,
 }
 
 impl RegConfig {
     pub fn power_on_reset(&mut self) {
-        self.transfer_data_pattern = DataTransferPattern::D;
+        self.data_transfer_pattern = DataTransferPattern::D;
         self.endianess = Endianess::Big;
     }
 }
