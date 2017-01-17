@@ -26,8 +26,8 @@ impl RegStatus {
         self.additional_fp_regs = (data & (1 << 26)) != 0;
         self.reverse_endian =     (data & (1 << 25)) != 0;
 
-        self.interrupt_mask.write(  (data >> 8) & 0b11111111)
         self.diagnostic_status = data.into();
+        self.interrupt_mask = data.into();
 
         self.kernel_mode_64bit_addressing_enable = (data & (1 << 7)) != 0;
         self.supervisor_mode_64bit_addressing_enable = (data & (1 << 6)) != 0;
@@ -89,6 +89,23 @@ struct InterruptMask {
     timer_interrupt: bool,
     external_interrupt_write_req: [bool; 5],
     software_interrupt_cause_reg: [bool; 2],
+}
+
+impl From<u32> for InterruptMask {
+    fn from(value: u32) -> Self {
+        InterruptMask {
+            timer_interrupt: (value & (1 << 15)) != 0,
+            external_interrupt_write_req: [
+                (value & (1 << 10)) != 0,
+                (value & (1 << 11)) != 0,
+                (value & (1 << 12)) != 0,
+                (value & (1 << 13)) != 0,
+                (value & (1 << 14)) != 0],
+            software_interrupt_cause_reg: [
+                (value & (1 << 8)) != 0,
+                (value & (1 << 9)) != 0],
+        }
+    }
 }
 
 #[derive(Debug)]
