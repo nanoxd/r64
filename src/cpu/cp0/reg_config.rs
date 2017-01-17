@@ -1,38 +1,43 @@
 // TODO: Better name
 #[derive(Debug)]
-enum Ep {
+enum DataTransferPattern {
     D,
     DxxDxx,
-    RFU,
 }
 
-impl Default for Ep {
-    fn default() -> Self { Ep::D }
+impl Default for DataTransferPattern {
+    fn default() -> Self { DataTransferPattern::D }
 }
 
 #[derive(Debug)]
-enum Be {
-    LittleEndian,
-    BigEndian,
+enum Endianess {
+    Little,
+    Big,
 }
 
-impl Default for Be {
-    fn default() -> Self { Be::BigEndian }
+impl Default for Endianess {
+    fn default() -> Self {
+         Endianess::Big
+    }
 }
 
 #[derive(Debug, Default)]
 pub struct RegConfig {
-    ep: Ep,
-    be: Be,
+    transfer_data_pattern: DataTransferPattern,
+    endianess: Endianess,
 }
 
 impl RegConfig {
     pub fn power_on_reset(&mut self) {
-        self.ep = Ep::D;
-        self.be = Be::BigEndian;
+        self.transfer_data_pattern = DataTransferPattern::D;
+        self.endianess = Endianess::Big;
     }
+}
 
-    pub fn write(&mut self, data: u32) {
-        unimplemented!()
+impl From<u32> for RegConfig {
+    fn from(value: u32) -> Self {
+        unimplemented!();
+        // RegConfig {
+        // }
     }
 }
