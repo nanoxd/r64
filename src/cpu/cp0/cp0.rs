@@ -23,6 +23,6 @@ impl CP0 {
 
     pub fn write_status_reg(&mut self, data: u64) {
         self.reg_status.write(data as u32);
-        panic!("Status reg write: {:#b}", data);
+        // panic!("Status reg write: {:#b}", data);
     }
 }
