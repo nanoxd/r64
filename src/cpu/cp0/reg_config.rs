@@ -31,4 +31,8 @@ impl RegConfig {
         self.ep = Ep::D;
         self.be = Be::BigEndian;
     }
+
+    pub fn write(&mut self, data: u32) {
+        unimplemented!()
+    }
 }
