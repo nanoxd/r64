@@ -9,6 +9,16 @@ impl Default for DataTransferPattern {
     fn default() -> Self { DataTransferPattern::D }
 }
 
+impl From<u32> for DataTransferPattern {
+    fn from(value: u32) -> Self {
+        match (value >> 24) & 0b1111 {
+            0 => DataTransferPattern::D,
+            6 => DataTransferPattern::DxxDxx,
+            _ => panic!("Invalid data transfer pattern (EP): {:#x}", value)
+        }
+    }
+}
+
 #[derive(Debug)]
 enum Endianess {
     Little,
