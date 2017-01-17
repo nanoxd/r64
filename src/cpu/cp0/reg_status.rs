@@ -26,8 +26,8 @@ impl RegStatus {
         self.additional_fp_regs = (data & (1 << 26)) != 0;
         self.reverse_endian =     (data & (1 << 25)) != 0;
 
-        self.diagnostic_status.write((data >> 16) & 0b111111111)
         self.interrupt_mask.write(  (data >> 8) & 0b11111111)
+        self.diagnostic_status = data.into();
 
         self.kernel_mode_64bit_addressing_enable = (data & (1 << 7)) != 0;
         self.supervisor_mode_64bit_addressing_enable = (data & (1 << 6)) != 0;
@@ -50,6 +50,18 @@ struct DiagnosticStatus {
     condition_bit: bool,
 }
 
+impl From<u32> for DiagnosticStatus {
+    fn from(value: u32) -> DiagnosticStatus {
+        DiagnosticStatus {
+            instruction_trace_support: (value & (1 << 24)) != 0,
+            tlb_general_exception_vector_location: value.into(),
+            tlb_shutdown: (value & (1 << 21)) != 0,
+            soft_reset_or_nmi_occurred: (value & (1 << 20)) != 0,
+            condition_bit: (value & (1 << 18)) != 0,
+        }
+    }
+}
+
 #[derive(Debug)]
 enum TLBGeneralExceptionVectorLocation {
     Normal,
@@ -59,6 +71,16 @@ enum TLBGeneralExceptionVectorLocation {
 impl Default for TLBGeneralExceptionVectorLocation {
     fn default() -> TLBGeneralExceptionVectorLocation {
         TLBGeneralExceptionVectorLocation::Normal
+    }
+}
+
+impl From<u32> for TLBGeneralExceptionVectorLocation {
+    fn from(value: u32) -> Self {
+        match (value >> 22) & 0b1 {
+            0 => TLBGeneralExceptionVectorLocation::Normal,
+            1 => TLBGeneralExceptionVectorLocation::Bootstrap,
+            _ => unreachable!()
+        }
     }
 }
 
