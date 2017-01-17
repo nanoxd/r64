@@ -45,6 +45,8 @@ impl From<u32> for Endianess {
 pub struct RegConfig {
     data_transfer_pattern: DataTransferPattern,
     endianess: Endianess,
+    cu: bool,
+    kseg0_cache_enabled: bool,
 }
 
 impl RegConfig {
@@ -58,7 +60,10 @@ impl From<u32> for RegConfig {
     fn from(value: u32) -> Self {
         RegConfig {
             data_transfer_pattern: value.into(),
-            endianess: value.into()
+            endianess: value.into(),
+
+            cu: (value & (1 << 3)) != 0,
+            kseg0_cache_enabled: value & 0b111 != 0b010
         }
     }
 }
