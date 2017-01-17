@@ -33,7 +33,7 @@ impl RegStatus {
         self.supervisor_mode_64bit_addressing_enable = (data & (1 << 6)) != 0;
         self.user_mode_64bit_addressing_enable = (data & (1 << 5)) != 0;
 
-        self.mode = Mode::from(data);
+        self.mode = data.into();
 
         self.error_level_enable =     (data & (1 << 2)) != 0;
         self.exception_level_enable = (data & (1 << 1)) != 0;
