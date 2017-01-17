@@ -64,15 +64,18 @@ impl CPU {
         let imm = instruction & 0xffff;
 
         match opcode {
-            0b001101 => { // ORI
+            0b001101 => { // ori
                 let res = self.read_reg_gpr(rs as usize) | (imm as u64);
                 self.write_reg_gpr(rt as usize, res);
             },
-            0b001111 => { // LUI
+            0b001111 => { // lui
                 // TODO
                 self.write_reg_gpr(rt as usize, (imm << 16) as u64);
             },
-            0b010000 => { // MTC0
+            0b100011 => { // lw
+
+            },
+            0b010000 => { // mtc0
                 let rd = (instruction >> 11) & 0b11111;
                 let data = self.read_reg_gpr(rt as usize);
                 self.cp0.write_reg(rd as u32, data);
