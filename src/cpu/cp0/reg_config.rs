@@ -7,7 +7,7 @@ enum Ep {
 }
 
 impl Default for Ep {
-    fn default() -> Ep { Ep::D }
+    fn default() -> Self { Ep::D }
 }
 
 #[derive(Debug)]
@@ -17,7 +17,7 @@ enum Be {
 }
 
 impl Default for Be {
-    fn default() -> Be { Be::BigEndian }
+    fn default() -> Self { Be::BigEndian }
 }
 
 #[derive(Debug, Default)]
