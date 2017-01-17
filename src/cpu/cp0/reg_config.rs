@@ -56,8 +56,9 @@ impl RegConfig {
 
 impl From<u32> for RegConfig {
     fn from(value: u32) -> Self {
-        unimplemented!();
-        // RegConfig {
-        // }
+        RegConfig {
+            data_transfer_pattern: value.into(),
+            endianess: value.into()
+        }
     }
 }
