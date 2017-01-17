@@ -14,8 +14,8 @@ impl CP0 {
 
     pub fn write_reg(&mut self, index: u32, data: u64) {
         match index {
-            12 => { self.reg_status.write(data as u32); },
-            16 => { self.reg_config.write(data as u32); },
+            12 => { self.reg_status = (data as u32).into(); },
+            16 => { self.reg_config = (data as u32).into(); },
             _ => panic!("Unrecognized CP0 reg: {}: {:#x}", index, data)
         }
     }
