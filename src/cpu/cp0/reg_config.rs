@@ -31,6 +31,16 @@ impl Default for Endianess {
     }
 }
 
+impl From<u32> for Endianess {
+    fn from(value: u32) -> Self {
+        match (value >> 15) & 0b1 {
+            0 => Endianess::Little,
+            1 => Endianess::Big,
+            _ => unreachable!()
+        }
+    }
+}
+
 #[derive(Debug, Default)]
 pub struct RegConfig {
     data_transfer_pattern: DataTransferPattern,
