@@ -33,12 +33,7 @@ impl RegStatus {
         self.supervisor_mode_64bit_addressing_enable = (data & (1 << 6)) != 0;
         self.user_mode_64bit_addressing_enable = (data & (1 << 5)) != 0;
 
-        self.mode = match (data >> 3) & 0b11 {
-            0b00 => Mode::Kernel,
-            0b01 => Mode::Supervisor,
-            0b10 => Mode::User,
-            _ => panic!("Invalid CP0 KSU bits: {:#b}", data)
-        };
+        self.mode = Mode::from(data);
 
         self.error_level_enable =     (data & (1 << 2)) != 0;
         self.exception_level_enable = (data & (1 << 1)) != 0;
@@ -84,5 +79,16 @@ enum Mode {
 impl Default for Mode {
     fn default() -> Mode {
         Mode::Kernel
+    }
+}
+
+impl From<u32> for Mode {
+    fn from(value: u32) -> Mode {
+        match (value >> 3) & 0b11 {
+            0b00 => Mode::Kernel,
+            0b01 => Mode::Supervisor,
+            0b10 => Mode::User,
+            _ => panic!("Invalid CP0 KSU bits: {:#b}", value),
+        }
     }
 }
