@@ -1,17 +1,20 @@
 use std::fmt;
 use byteorder::{BigEndian,ByteOrder};
 use mem_map::*;
+use rsp::RSP;
 
 const RAM_SIZE: usize = 4 * 1024 * 1024;
 
 pub struct Interconnect {
     pif_rom: Vec<u8>,
     ram: Vec<u16>,
+    rsp: RSP,
 }
 
 impl Interconnect {
     pub fn new(pif_rom: Vec<u8>) -> Interconnect {
         Interconnect {
+            rsp: RSP::default(),
             pif_rom: pif_rom,
             ram: vec![0; RAM_SIZE]
         }
@@ -24,7 +27,12 @@ impl Interconnect {
 
             BigEndian::read_u32(&self.pif_rom[rel_addr as usize..])
         } else {
-            panic!("Unrecognized physical address {:#x}", addr)
+            match addr {
+                SP_STATUS_REG => {
+                    self.rsp.read_status_reg()
+                },
+                _ => panic!("Unrecognized physical address {:#x}", addr)
+            }
         }
     }
 }
