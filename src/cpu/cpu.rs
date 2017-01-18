@@ -123,6 +123,11 @@ impl CPU {
         let imm = instruction & 0xffff;
 
         match opcode {
+            0b001100 => { // andi
+                let res = self.read_reg_gpr(rs as usize) & (imm as u64);
+                self.write_reg_gpr(rt as usize, res);
+
+            },
             0b001101 => { // ori
                 let res = self.read_reg_gpr(rs as usize) | (imm as u64);
                 self.write_reg_gpr(rt as usize, res);
