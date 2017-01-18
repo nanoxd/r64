@@ -70,7 +70,8 @@ impl CPU {
             },
             0b001111 => { // lui
                 // TODO
-                self.write_reg_gpr(rt as usize, (imm << 16) as u64);
+                let value = ((imm << 16) as i32) as u64;
+                self.write_reg_gpr(rt as usize, value);
             },
             0b100011 => { // lw
 
