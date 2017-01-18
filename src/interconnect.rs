@@ -1,7 +1,7 @@
 use std::fmt;
 use byteorder::{BigEndian,ByteOrder};
+use mem_map::*;
 
-const PIF_ROM_SIZE: usize = 2048;
 const RAM_SIZE: usize = 4 * 1024 * 1024;
 
 pub struct Interconnect {
@@ -19,8 +19,8 @@ impl Interconnect {
 
     pub fn read_word(&self, addr: u32) -> u32 {
         // TODO: Replace constants
-        if addr >= 0x1fc0_0000 && addr < 0x1fc0_07c0 {
-            let rel_addr = addr - 0x1fc0_0000;
+        if addr >= PIF_ROM_START && addr < PIF_ROM_END {
+            let rel_addr = addr - PIF_ROM_START;
 
             BigEndian::read_u32(&self.pif_rom[rel_addr as usize..])
         } else {
