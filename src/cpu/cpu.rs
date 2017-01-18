@@ -1,5 +1,5 @@
 use ::interconnect;
-use super::cp0::cp0::CP0;
+use super::cp0::CP0;
 
 const NUM_GPR: usize = 32;
 
