@@ -74,16 +74,21 @@ impl CPU {
                 self.write_reg_gpr(rt as usize, value);
             },
             0b100011 => { // lw
+                let base = rs;
+                let offset = imm;
+                let sign_extended_offset = (offset as i16) as u64;
 
+                let virt_addr = sign_extended_offset + self.read_reg_gpr(base as usize);
+                let mem = (self.read_word(virt_addr) as i32) as u64;
+                self.write_reg_gpr(rt as usize, mem);
             },
             0b010000 => { // mtc0
                 let rd = (instruction >> 11) & 0b11111;
                 let data = self.read_reg_gpr(rt as usize);
                 self.cp0.write_reg(rd as u32, data);
             },
-            _ => {
-                panic!("Unrecognized opcode: {:#x}", instruction)
-            }
+            _ => panic!("Unrecognized opcode: {:#x}", instruction)
+
         }
 
         self.reg_pc += 4;
