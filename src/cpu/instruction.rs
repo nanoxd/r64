@@ -1,11 +1,21 @@
-use super::opcode;
+use super::opcode::Opcode;
 
+use num::FromPrimitive;
+
+#[derive(Debug)]
 pub struct Instruction(u32);
 
 impl Instruction {
     #[inline(always)]
     pub fn opcode(&self) -> Opcode {
-        self.into()
+        Opcode::from_u32(self.0).unwrap_or(
+            panic!("Unrecognized instruction: {:#x}", self.0)
+        )
+    }
+
+    #[inline(always)]
+    pub fn rd(&self) -> u32 {
+        (self.0 >> 11) & 0b11111
     }
 
     #[inline(always)]
