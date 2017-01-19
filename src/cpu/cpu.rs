@@ -119,9 +119,9 @@ impl CPU {
         let instruction = Instruction(self.read_word(self.reg_pc));
 
         let opcode = (instruction >> 26) & 0b111111;
-        let rs = (instruction >> 21) & 0b11111;
-        let rt = (instruction >> 16) & 0b11111;
-        let imm = instruction & 0xffff;
+        let rs = instruction.rs();
+        let rt = instruction.rt();
+        let imm = instruction.imm();
 
         match opcode {
             0b001100 => { // andi
