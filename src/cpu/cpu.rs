@@ -1,5 +1,6 @@
 use ::interconnect;
 use super::cp0::CP0;
+use super::instruction::Instruction;
 
 use std::fmt;
 
@@ -115,7 +116,7 @@ impl CPU {
     }
 
     pub fn run_instruction(&mut self) {
-        let instruction = self.read_word(self.reg_pc);
+        let instruction = Instruction(self.read_word(self.reg_pc));
 
         let opcode = (instruction >> 26) & 0b111111;
         let rs = (instruction >> 21) & 0b11111;
