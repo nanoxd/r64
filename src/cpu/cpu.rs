@@ -137,6 +137,15 @@ impl CPU {
                 let value = ((imm << 16) as i32) as u64;
                 self.write_reg_gpr(rt as usize, value);
             },
+            0b010100 => { // beql
+                if self.read_reg_gpr(rs as usize) == self.read_reg_gpr(rt as usize) {
+                    let offset = imm;
+                    let sign_extended_offset = ((offset as i16) as u64).wrapping_shl(2);
+                    self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
+
+                    self.run_instruction();
+                }
+            },
             0b100011 => { // lw
                 let base = rs;
                 let offset = imm;
