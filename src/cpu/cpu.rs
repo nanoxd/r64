@@ -1,6 +1,7 @@
 use ::interconnect;
 use super::cp0::CP0;
 use super::instruction::Instruction;
+use super::opcode::Opcode::*;
 
 use std::fmt;
 
@@ -116,52 +117,46 @@ impl CPU {
     }
 
     pub fn run_instruction(&mut self) {
-        let instruction = Instruction(self.read_word(self.reg_pc));
+        let instr = Instruction(self.read_word(self.reg_pc));
 
-        let opcode = (instruction >> 26) & 0b111111;
-        let rs = instruction.rs();
-        let rt = instruction.rt();
-        let imm = instruction.imm();
-
-        match opcode {
-            0b001100 => { // andi
-                let res = self.read_reg_gpr(rs as usize) & (imm as u64);
-                self.write_reg_gpr(rt as usize, res);
+        match instr.opcode() {
+            Andi => {
+                let res = self.read_reg_gpr(instr.rs() as usize) & (instr.imm() as u64);
+                self.write_reg_gpr(instr.rt() as usize, res);
 
             },
-            0b001101 => { // ori
-                let res = self.read_reg_gpr(rs as usize) | (imm as u64);
-                self.write_reg_gpr(rt as usize, res);
+            Ori => {
+                let res = self.read_reg_gpr(instr.rs() as usize) | (instr.imm() as u64);
+                self.write_reg_gpr(instr.rt() as usize, res);
             },
-            0b001111 => { // lui
+            Lui => {
                 // TODO
-                let value = ((imm << 16) as i32) as u64;
-                self.write_reg_gpr(rt as usize, value);
+                let value = ((instr.imm() << 16) as i32) as u64;
+                self.write_reg_gpr(instr.rt() as usize, value);
             },
-            0b010100 => { // beql
-                if self.read_reg_gpr(rs as usize) == self.read_reg_gpr(rt as usize) {
-                    let offset = imm;
+            Beql => {
+                if self.read_reg_gpr(instr.rs() as usize) == self.read_reg_gpr(instr.rt() as usize) {
+                    let offset = instr.imm();
                     let sign_extended_offset = ((offset as i16) as u64).wrapping_shl(2);
                     self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
 
                     self.run_instruction();
                 }
             },
-            0b100011 => { // lw
-                let base = rs;
-                let offset = imm;
+            Lw => {
+                let base = instr.rs();
+                let offset = instr.imm();
                 let sign_extended_offset = (offset as i16) as u64;
 
                 let virt_addr = self.read_reg_gpr(base as usize).wrapping_add(sign_extended_offset);
                 let mem = (self.read_word(virt_addr) as i32) as u64;
-                self.write_reg_gpr(rt as usize, mem);
+                self.write_reg_gpr(instr.rt() as usize, mem);
             },
-            0b010000 => { // mtc0
-                let rd = (instruction >> 11) & 0b11111;
-                let data = self.read_reg_gpr(rt as usize);
-                self.cp0.write_reg(rd as u32, data);
+            Mtc0 => {
+                let data = self.read_reg_gpr(instr.rt() as usize);
+                self.cp0.write_reg(instr.rd() as u32, data);
             },
-            _ => panic!("Unrecognized opcode: {:#x}", instruction)
+            _ => panic!("Unrecognized opcode: {:?}", instr)
 
         }
 
