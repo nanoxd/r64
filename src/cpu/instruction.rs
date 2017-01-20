@@ -19,8 +19,8 @@ impl Instruction {
     }
 
     #[inline(always)]
-    pub fn rs(&self) -> u32 {
-        (self.0 >> 21) & 0b11111
+    pub fn rs(&self) -> usize {
+        ((self.0 >> 21) & 0b11111) as usize
     }
 
     #[inline(always)]
