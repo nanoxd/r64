@@ -117,16 +117,23 @@ impl CPU {
     }
 
     pub fn run_instruction(&mut self) {
-        let instr = Instruction(self.read_word(self.reg_pc));
-        self.reg_pc += 4;
+        let instr = self.read_instruction(self.reg_pc);
 
         println!("reg_pc: {:018X}: {:?}", self.reg_pc, instr);
 
+        self.reg_pc += 4;
+        self.execute_instruction(instr);
+    }
+
+    fn read_instruction(&self, addr: u64) -> Instruction {
+        Instruction(self.read_word(addr))
+    }
+
+    fn execute_instruction(&mut self, instr: Instruction) {
         match instr.opcode() {
             Andi => {
                 let res = self.read_reg_gpr(instr.rs() as usize) & (instr.imm() as u64);
                 self.write_reg_gpr(instr.rt() as usize, res);
-
             },
             Ori => {
                 let res = self.read_reg_gpr(instr.rs() as usize) | (instr.imm() as u64);
@@ -139,10 +146,13 @@ impl CPU {
             },
             Beql => {
                 if self.read_reg_gpr(instr.rs() as usize) == self.read_reg_gpr(instr.rt() as usize) {
+                    let old_pc = self.reg_pc;
+
                     let sign_extended_offset = ((instr.offset() as i16) as u64).wrapping_shl(2);
                     self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
 
-                    self.run_instruction();
+                    let delay_slot_instr = self.read_instruction(old_pc);
+                    self.execute_instruction(delay_slot_instr);
                 }
             },
             Lw => {
