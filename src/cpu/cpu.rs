@@ -155,9 +155,7 @@ impl CPU {
             Mtc0 => {
                 let data = self.read_reg_gpr(instr.rt() as usize);
                 self.cp0.write_reg(instr.rd() as u32, data);
-            },
-            _ => panic!("Unrecognized opcode: {:?}", instr)
-
+            }
         }
 
         self.reg_pc += 4;

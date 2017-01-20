@@ -3,7 +3,7 @@ use super::opcode::Opcode;
 use num::FromPrimitive;
 
 #[derive(Debug)]
-pub struct Instruction(u32);
+pub struct Instruction(pub u32);
 
 impl Instruction {
     #[inline(always)]
