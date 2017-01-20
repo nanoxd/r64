@@ -139,8 +139,7 @@ impl CPU {
             },
             Beql => {
                 if self.read_reg_gpr(instr.rs() as usize) == self.read_reg_gpr(instr.rt() as usize) {
-                    let offset = instr.imm();
-                    let sign_extended_offset = ((offset as i16) as u64).wrapping_shl(2);
+                    let sign_extended_offset = ((instr.offset() as i16) as u64).wrapping_shl(2);
                     self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
 
                     self.run_instruction();
