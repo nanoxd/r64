@@ -157,6 +157,8 @@ impl CPU {
 
                     let delay_slot_instr = self.read_instruction(old_pc);
                     self.execute_instruction(delay_slot_instr);
+                } else {
+                    self.reg_pc = self.reg_pc.wrapping_add(4);
                 }
             },
             Lw => {
