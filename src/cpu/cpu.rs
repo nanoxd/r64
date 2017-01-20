@@ -132,6 +132,10 @@ impl CPU {
     fn execute_instruction(&mut self, instr: Instruction) {
         match instr.opcode() {
             Addi => {
+                let res = self.read_reg_gpr(instr.rs()).wrapping_add(instr.imm_sign_extended());
+                self.write_reg_gpr(instr.rt(), res);
+            },
+            Addiu => {
                 let res = self.read_reg_gpr(instr.rs()) + instr.imm_sign_extended();
                 self.write_reg_gpr(instr.rt(), res);
             },
