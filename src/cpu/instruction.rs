@@ -24,8 +24,8 @@ impl Instruction {
     }
 
     #[inline(always)]
-    pub fn rt(&self) -> u32 {
-        (self.0 >> 16) & 0b11111
+    pub fn rt(&self) -> usize {
+        ((self.0 >> 16) & 0b11111) as usize
     }
 
     #[inline(always)]
@@ -34,8 +34,18 @@ impl Instruction {
     }
 
     #[inline(always)]
+    pub fn imm_sign_extended(&self) -> u64 {
+        (self.imm() as i16) as u64
+    }
+
+    #[inline(always)]
     pub fn offset(&self) -> u32 {
         self.imm()
+    }
+
+    #[inline(always)]
+    pub fn offset_sign_extended(&self) -> u64 {
+        (self.offset() as i16) as u64
     }
 }
 
