@@ -118,8 +118,9 @@ impl CPU {
 
     pub fn run_instruction(&mut self) {
         let instr = Instruction(self.read_word(self.reg_pc));
+        self.reg_pc += 4;
 
-        println!("{:?}", instr);
+        println!("reg_pc: {:018X}: {:?}", self.reg_pc, instr);
 
         match instr.opcode() {
             Andi => {
@@ -159,8 +160,6 @@ impl CPU {
                 self.cp0.write_reg(instr.rd() as u32, data);
             }
         }
-
-        self.reg_pc += 4;
     }
 
     fn read_reg_gpr(&self, index: usize) -> u64 {
