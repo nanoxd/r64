@@ -119,6 +119,8 @@ impl CPU {
     pub fn run_instruction(&mut self) {
         let instr = Instruction(self.read_word(self.reg_pc));
 
+        println!("{:?}", instr);
+
         match instr.opcode() {
             Andi => {
                 let res = self.read_reg_gpr(instr.rs() as usize) & (instr.imm() as u64);
