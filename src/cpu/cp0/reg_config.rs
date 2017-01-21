@@ -6,7 +6,9 @@ enum DataTransferPattern {
 }
 
 impl Default for DataTransferPattern {
-    fn default() -> Self { DataTransferPattern::D }
+    fn default() -> Self {
+         DataTransferPattern::D
+    }
 }
 
 impl From<u32> for DataTransferPattern {
@@ -47,13 +49,6 @@ pub struct RegConfig {
     endianess: Endianess,
     cu: bool,
     kseg0_cache_enabled: bool,
-}
-
-impl RegConfig {
-    pub fn power_on_reset(&mut self) {
-        self.data_transfer_pattern = DataTransferPattern::D;
-        self.endianess = Endianess::Big;
-    }
 }
 
 impl From<u32> for RegConfig {

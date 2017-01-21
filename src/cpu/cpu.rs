@@ -89,7 +89,7 @@ impl CPU {
             reg_gpr: [0; NUM_GPR],
             reg_fpr: [0; NUM_GPR],
 
-            reg_pc: 0,
+            reg_pc: 0xffff_ffff_bfc0_0000,
 
             reg_hi: 0,
             reg_lo: 0,
@@ -103,13 +103,7 @@ impl CPU {
             interconnect: interconnect,
         }
     }
-
-    pub fn power_on_reset(&mut self) {
-        self.cp0.power_on_reset();
-
-        self.reg_pc = 0xffff_ffff_bfc0_0000;
-    }
-
+    
     pub fn run(&mut self) {
         loop {
             self.run_instruction();
