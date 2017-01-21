@@ -156,7 +156,7 @@ impl CPU {
                 if self.read_reg_gpr(instr.rs()) == self.read_reg_gpr(instr.rt()) {
                     let old_pc = self.reg_pc;
 
-                    let sign_extended_offset = instr.offset_sign_extended().wrapping_shl(2);
+                    let sign_extended_offset = instr.offset_sign_extended() << 2;
                     self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
 
                     let delay_slot_instr = self.read_instruction(old_pc);
