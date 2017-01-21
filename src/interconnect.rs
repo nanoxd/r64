@@ -21,7 +21,17 @@ impl Interconnect {
     }
 
     pub fn read_word(&self, addr: u32) -> u32 {
-        // TODO: Replace constants
+        match addr {
+            PIF_ROM_START ... PIF_ROM_END => {
+                let rel_addr = addr - PIF_ROM_START;
+
+                BigEndian::read_u32(&self.pif_rom[rel_addr as usize..])
+            },
+            SP_STATUS_REG => self.rsp.read_status_reg(),
+            _ => panic!("Unrecognized physical address {:#x}", addr)
+        }
+    }
+
         if addr >= PIF_ROM_START && addr < PIF_ROM_END {
             let rel_addr = addr - PIF_ROM_START;
 
