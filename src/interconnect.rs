@@ -5,6 +5,11 @@ use rsp::RSP;
 
 const RAM_SIZE: usize = 4 * 1024 * 1024;
 
+enum Addr {
+    PifRom(u32),
+    SpStatusReg,
+}
+
 pub struct Interconnect {
     pif_rom: Box<[u8]>,
     ram: Box<[u16]>,
@@ -21,28 +26,19 @@ impl Interconnect {
     }
 
     pub fn read_word(&self, addr: u32) -> u32 {
-        match addr {
-            PIF_ROM_START ... PIF_ROM_END => {
-                let rel_addr = addr - PIF_ROM_START;
-
-                BigEndian::read_u32(&self.pif_rom[rel_addr as usize..])
-            },
-            SP_STATUS_REG => self.rsp.read_status_reg(),
+        match self.mem_map(addr) {
+            Addr::PifRom(offset) => BigEndian::read_u32(&self.pif_rom[offset as usize..]), Addr::SpStatusReg => self.rsp.read_status_reg(),
             _ => panic!("Unrecognized physical address {:#x}", addr)
         }
     }
 
-        if addr >= PIF_ROM_START && addr < PIF_ROM_END {
-            let rel_addr = addr - PIF_ROM_START;
+    fn mem_map(&self, addr: u32) -> Addr {
+        match addr {
+            PIF_ROM_START ... PIF_ROM_END => Addr::PifRom(addr - PIF_ROM_START),
 
-            BigEndian::read_u32(&self.pif_rom[rel_addr as usize..])
-        } else {
-            match addr {
-                SP_STATUS_REG => {
-                    self.rsp.read_status_reg()
-                },
-                _ => panic!("Unrecognized physical address {:#x}", addr)
-            }
+            SP_STATUS_REG => Addr::SpStatusReg,
+
+            _ => panic!("Unrecognized physical address {:#x}", addr)
         }
     }
 }
