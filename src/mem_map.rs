@@ -4,3 +4,4 @@ pub const PIF_ROM_END: u32 = PIF_ROM_START + PIF_ROM_LENGTH - 1;
 
 pub const SP_BASE_REG: u32 = 0x0404_0000;
 pub const SP_STATUS_REG: u32 = 0x0404_0010;
+pub const SP_DMA_BUSY_REG: u32 = 0x0404_0018;
