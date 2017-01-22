@@ -165,7 +165,6 @@ impl CPU {
         }
     }
 
-    #[inline(always)]
     fn branch<F>(&mut self, instr: Instruction, f: F)
         where F: FnOnce(u64, u64) -> bool {
 
