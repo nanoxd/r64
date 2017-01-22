@@ -3,6 +3,7 @@ use super::opcode::Opcode;
 use num::FromPrimitive;
 use std::fmt;
 
+#[derive(Clone, Copy)]
 pub struct Instruction(pub u32);
 
 impl Instruction {
