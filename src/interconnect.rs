@@ -39,6 +39,7 @@ impl Interconnect {
             Addr::ViHStartReg => self.vi.read_h_start_reg(),
             Addr::ViCurrentReg => self.vi.read_current_reg(),
             Addr::AiDramAddrReg => self.ai.read_dram_addr_reg(),
+            Addr::AiLenReg => self.ai.read_len_reg(),
         }
     }
 
@@ -52,6 +53,7 @@ impl Interconnect {
             Addr::ViHStartReg => self.vi.write_h_start_reg(value),
             Addr::ViCurrentReg => self.vi.write_current_reg(value),
             Addr::AiDramAddrReg => self.ai.write_dram_addr_reg(value),
+            Addr::AiLenReg => self.ai.write_len_reg(value),
         }
     }
 }
