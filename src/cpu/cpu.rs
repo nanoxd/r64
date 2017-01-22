@@ -146,8 +146,8 @@ impl CPU {
                 let value = ((instr.imm() << 16) as i32) as u64;
                 self.write_reg_gpr(instr.rt(), value);
             },
-            Beql => self.branch(&instr, |rs, rt| rs == rt),
-            Bnel => self.branch(&instr, |rs, rt| rs != rt),
+            Beql => self.branch(instr, |rs, rt| rs == rt),
+            Bnel => self.branch(instr, |rs, rt| rs != rt),
             Lw => {
                 let virt_addr = self.read_reg_gpr(instr.rs()).wrapping_add(instr.offset_sign_extended());
                 let mem = (self.read_word(virt_addr) as i32) as u64;
@@ -166,9 +166,9 @@ impl CPU {
     }
 
     #[inline(always)]
-    fn branch<F>(&mut self, instr: &Instruction, f: F)
+    fn branch<F>(&mut self, instr: Instruction, f: F)
         where F: FnOnce(u64, u64) -> bool {
-            
+
         let rs = self.read_reg_gpr(instr.rs());
         let rt = self.read_reg_gpr(instr.rt());
 
