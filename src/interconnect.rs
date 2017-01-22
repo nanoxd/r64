@@ -19,7 +19,7 @@ pub struct Interconnect {
 impl Interconnect {
     pub fn new(pif_rom: Box<[u8]>) -> Interconnect {
         Interconnect {
-            rsp: RSP::default(),
+            rsp: RSP::new(),
             pif_rom: pif_rom,
             ram: vec![0; RAM_SIZE].into_boxed_slice()
         }
@@ -28,7 +28,13 @@ impl Interconnect {
     pub fn read_word(&self, addr: u32) -> u32 {
         match self.mem_map(addr) {
             Addr::PifRom(offset) => BigEndian::read_u32(&self.pif_rom[offset as usize..]), Addr::SpStatusReg => self.rsp.read_status_reg(),
-            _ => panic!("Unrecognized physical address {:#x}", addr)
+        }
+    }
+
+    pub fn write_word(&mut self, addr: u32, value: u32) {
+        match self.mem_map(addr) {
+            Addr::PifRom(_) => panic!("Cannot write to PIF ROM"),
+            Addr::SpStatusReg => self.rsp.write_status_reg(value),
         }
     }
 

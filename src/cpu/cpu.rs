@@ -103,7 +103,7 @@ impl CPU {
             interconnect: interconnect,
         }
     }
-    
+
     pub fn run(&mut self) {
         loop {
             self.run_instruction();
@@ -160,7 +160,6 @@ impl CPU {
                 }
             },
             Lw => {
-
                 let virt_addr = self.read_reg_gpr(instr.rs()).wrapping_add(instr.offset_sign_extended());
                 let mem = (self.read_word(virt_addr) as i32) as u64;
                 self.write_reg_gpr(instr.rt(), mem);
@@ -168,6 +167,11 @@ impl CPU {
             Mtc0 => {
                 let data = self.read_reg_gpr(instr.rt());
                 self.cp0.write_reg(instr.rd() as u32, data);
+            },
+            Sw => {
+                let virt_addr = self.read_reg_gpr(instr.rs()).wrapping_add(instr.offset_sign_extended());
+                let mem = self.read_reg_gpr(instr.rt()) as u32;
+                self.write_word(virt_addr, mem);
             }
         }
     }
@@ -189,6 +193,12 @@ impl CPU {
         let phys_addr = self.virtual_addr_to_phys_addr(virt_addr);
 
         self.interconnect.read_word(phys_addr as u32)
+    }
+
+    fn write_word(&mut self, virt_addr: u64, value: u32) {
+        let phys_addr = self.virtual_addr_to_phys_addr(virt_addr);
+
+        self.interconnect.write_word(phys_addr as u32, value);
     }
 
     fn virtual_addr_to_phys_addr(&self, virt_addr: u64) -> u64 {

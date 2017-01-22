@@ -11,5 +11,6 @@ enum_from_primitive! {
         Mtc0  = 0b010000,
         Beql  = 0b010100,
         Lw    = 0b100011,
+        Sw    = 0b101011,
     }
 }
