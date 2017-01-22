@@ -23,4 +23,12 @@ impl VideoInterface {
         self.active_video_start = (value >> 16) & 0x0000_03ff;
         self.active_video_start = value & 0x0000_03ff;
     }
+
+    pub fn read_current_reg(&self) -> u32 {
+        0
+    }
+
+    pub fn write_current_reg(&mut self, value: u32) {
+        // TODO:
+    }
 }
