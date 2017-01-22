@@ -9,7 +9,10 @@ enum_from_primitive! {
 
         Lui   = 0b001111,
         Mtc0  = 0b010000,
+
         Beql  = 0b010100,
+        Bnel  = 0b010101,
+
         Lw    = 0b100011,
         Sw    = 0b101011,
     }

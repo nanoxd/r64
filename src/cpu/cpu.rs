@@ -146,19 +146,8 @@ impl CPU {
                 let value = ((instr.imm() << 16) as i32) as u64;
                 self.write_reg_gpr(instr.rt(), value);
             },
-            Beql => {
-                if self.read_reg_gpr(instr.rs()) == self.read_reg_gpr(instr.rt()) {
-                    let old_pc = self.reg_pc;
-
-                    let sign_extended_offset = instr.offset_sign_extended() << 2;
-                    self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
-
-                    let delay_slot_instr = self.read_instruction(old_pc);
-                    self.execute_instruction(delay_slot_instr);
-                } else {
-                    self.reg_pc = self.reg_pc.wrapping_add(4);
-                }
-            },
+            Beql => self.branch(&instr, |rs, rt| rs == rt),
+            Bnel => self.branch(&instr, |rs, rt| rs != rt),
             Lw => {
                 let virt_addr = self.read_reg_gpr(instr.rs()).wrapping_add(instr.offset_sign_extended());
                 let mem = (self.read_word(virt_addr) as i32) as u64;
@@ -173,6 +162,26 @@ impl CPU {
                 let mem = self.read_reg_gpr(instr.rt()) as u32;
                 self.write_word(virt_addr, mem);
             }
+        }
+    }
+
+    #[inline(always)]
+    fn branch<F>(&mut self, instr: &Instruction, f: F)
+        where F: FnOnce(u64, u64) -> bool {
+            
+        let rs = self.read_reg_gpr(instr.rs());
+        let rt = self.read_reg_gpr(instr.rt());
+
+        if f(rs, rt) {
+            let old_pc = self.reg_pc;
+
+            let sign_extended_offset = instr.offset_sign_extended() << 2;
+            self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
+
+            let delay_slot_instr = self.read_instruction(old_pc);
+            self.execute_instruction(delay_slot_instr);
+        } else {
+            self.reg_pc = self.reg_pc.wrapping_add(4);
         }
     }
 
