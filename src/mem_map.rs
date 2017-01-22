@@ -8,6 +8,7 @@ const SP_DMA_BUSY_REG: u32 = 0x0404_0018;
 
 const VI_BASE_REG: u32 = 0x0440_0000;
 const VI_INTR_REG: u32 = 0x0440_000c;
+const VI_H_START_REG: u32 = 0x0440_0024;
 
 const PI_BASE_REG: u32 = 0x0460_0000;
 const PI_STATUS_REG: u32 = 0x0460_0010;
@@ -17,6 +18,7 @@ pub enum Addr {
     PifRom(u32),
 
     ViIntrReg,
+    ViHStartReg,
 
     SpStatusReg,
     SpDmaBusyReg,
@@ -33,6 +35,7 @@ pub fn map_addr(addr: u32) -> Addr {
         SP_DMA_BUSY_REG => Addr::SpDmaBusyReg,
 
         VI_INTR_REG => Addr::ViIntrReg,
+        VI_H_START_REG => Addr::ViHStartReg,
 
         _ => panic!("Unrecognized physical address {:#x}", addr)
     }
