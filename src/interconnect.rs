@@ -2,11 +2,13 @@ use std::fmt;
 use byteorder::{BigEndian,ByteOrder};
 use mem_map::*;
 use rsp::RSP;
+use peripheral_interface::PeripheralInterface;
 
 const RAM_SIZE: usize = 4 * 1024 * 1024;
 
 pub struct Interconnect {
     pif_rom: Box<[u8]>,
+    pi: PeripheralInterface,
     ram: Box<[u16]>,
     rsp: RSP,
 }
@@ -16,7 +18,8 @@ impl Interconnect {
         Interconnect {
             rsp: RSP::new(),
             pif_rom: pif_rom,
-            ram: vec![0; RAM_SIZE].into_boxed_slice()
+            ram: vec![0; RAM_SIZE].into_boxed_slice(),
+            pi: PeripheralInterface::default(),
         }
     }
 
