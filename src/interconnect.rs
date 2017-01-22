@@ -3,12 +3,14 @@ use byteorder::{BigEndian,ByteOrder};
 use mem_map::*;
 use rsp::RSP;
 use peripheral_interface::PeripheralInterface;
+use video_interface::VideoInterface;
 
 const RAM_SIZE: usize = 4 * 1024 * 1024;
 
 pub struct Interconnect {
     pif_rom: Box<[u8]>,
     pi: PeripheralInterface,
+    vi: VideoInterface,
     ram: Box<[u16]>,
     rsp: RSP,
 }
@@ -20,6 +22,7 @@ impl Interconnect {
             pif_rom: pif_rom,
             ram: vec![0; RAM_SIZE].into_boxed_slice(),
             pi: PeripheralInterface::default(),
+            vi: VideoInterface::default(),
         }
     }
 
