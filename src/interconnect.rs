@@ -34,6 +34,7 @@ impl Interconnect {
             Addr::PiStatusReg => self.pi.read_status_reg(),
             Addr::ViIntrReg => self.vi.read_intr_reg(),
             Addr::ViHStartReg => self.vi.read_h_start_reg(),
+            Addr::ViCurrentReg => self.vi.read_current_reg(),
         }
     }
 
@@ -45,6 +46,7 @@ impl Interconnect {
             Addr::PiStatusReg => self.pi.write_status_reg(value),
             Addr::ViIntrReg => self.vi.write_intr_reg(value),
             Addr::ViHStartReg => self.vi.write_h_start_reg(value),
+            Addr::ViCurrentReg => self.vi.write_current_reg(value),
         }
     }
 }
