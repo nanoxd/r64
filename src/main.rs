@@ -5,8 +5,9 @@ extern crate num;
 
 mod cpu;
 mod interconnect;
-mod video_interface;
+mod audio_interface;
 mod peripheral_interface;
+mod video_interface;
 mod n64;
 mod mem_map;
 mod rsp;
