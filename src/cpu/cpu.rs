@@ -165,13 +165,14 @@ impl CPU {
         }
     }
 
-    fn branch_likely<F>(&mut self, instr: Instruction, f: F)
+    fn branch<F>(&mut self, instr: Instruction, f: F) -> bool
         where F: FnOnce(u64, u64) -> bool {
 
         let rs = self.read_reg_gpr(instr.rs());
         let rt = self.read_reg_gpr(instr.rt());
+        let is_taken = f(rs, rt);
 
-        if f(rs, rt) {
+        if is_taken {
             let old_pc = self.reg_pc;
 
             let sign_extended_offset = instr.offset_sign_extended() << 2;
@@ -179,7 +180,15 @@ impl CPU {
 
             let delay_slot_instr = self.read_instruction(old_pc);
             self.execute_instruction(delay_slot_instr);
-        } else {
+        }
+
+        is_taken
+    }
+
+    fn branch_likely<F>(&mut self, instr: Instruction, f: F)
+        where F: FnOnce(u64, u64) -> bool {
+
+        if !self.branch(instr, f) {
             self.reg_pc = self.reg_pc.wrapping_add(4);
         }
     }
