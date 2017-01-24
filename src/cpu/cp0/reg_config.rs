@@ -49,6 +49,7 @@ pub struct RegConfig {
     endianess: Endianess,
     cu: bool,
     kseg0_cache_enabled: bool,
+    kseg0_cache_enable_bits: [bool; 3],
 }
 
 impl From<u32> for RegConfig {
@@ -58,6 +59,11 @@ impl From<u32> for RegConfig {
             endianess: value.into(),
 
             cu: (value & (1 << 3)) != 0,
+            kseg0_cache_enable_bits: [
+                (value & (1 << 0)) != 0,
+                (value & (1 << 1)) != 0,
+                (value & (1 << 2)) != 0,
+            ],
             kseg0_cache_enabled: value & 0b111 != 0b010
         }
     }
