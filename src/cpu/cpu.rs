@@ -2,6 +2,7 @@ use ::interconnect;
 use super::cp0::CP0;
 use super::instruction::Instruction;
 use super::opcode::Opcode::*;
+use super::opcode::SpecialOpcode::*;
 
 use std::fmt;
 
@@ -125,6 +126,16 @@ impl CPU {
 
     fn execute_instruction(&mut self, instr: Instruction) {
         match instr.opcode() {
+            Special => match instr.special_op() {
+                Jr => {
+                    let delay_slot_pc = self.reg_pc;
+
+                    self.reg_pc = self.read_reg_gpr(instr.rs());
+
+                    let delay_slot_instr = self.read_instruction(delay_slot_pc);
+                    self.execute_instruction(delay_slot_instr);
+                }
+            },
             Addi => {
                 let res = self.read_reg_gpr(instr.rs()).wrapping_add(instr.imm_sign_extended());
                 self.write_reg_gpr(instr.rt(), res);

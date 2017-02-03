@@ -1,4 +1,4 @@
-use super::opcode::Opcode;
+use super::opcode::{Opcode, SpecialOpcode};
 
 use num::FromPrimitive;
 use std::fmt;
@@ -48,6 +48,13 @@ impl Instruction {
     #[inline(always)]
     pub fn offset_sign_extended(&self) -> u64 {
         (self.offset() as i16) as u64
+    }
+
+    pub fn special_op(&self) -> SpecialOpcode {
+        let value = self.0 & 0b111111;
+        SpecialOpcode::from_u32(value).unwrap_or_else(||
+            panic!("Unrecognized special instruction: {:#010x} (op: {:#08b})", self.0, value)
+        )
     }
 }
 

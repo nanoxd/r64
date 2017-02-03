@@ -19,3 +19,10 @@ enum_from_primitive! {
         Sw      = 0b101011,
     }
 }
+
+enum_from_primitive! {
+    #[derive(Debug)]
+    pub enum SpecialOpcode {
+        Jr = 0b001000,
+    }
+}
