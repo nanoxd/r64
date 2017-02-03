@@ -174,12 +174,12 @@ impl CPU {
         let is_taken = f(rs, rt);
 
         if is_taken {
-            let old_pc = self.reg_pc;
+            let delay_slot_pc = self.reg_pc;
 
             let sign_extended_offset = instr.offset_sign_extended() << 2;
             self.reg_pc = self.reg_pc.wrapping_add(sign_extended_offset);
 
-            let delay_slot_instr = self.read_instruction(old_pc);
+            let delay_slot_instr = self.read_instruction(delay_slot_pc);
             self.execute_instruction(delay_slot_instr);
         }
 
